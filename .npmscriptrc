@@ -4,13 +4,7 @@
 {
    "build":
    {
-      "babel": { "source": "src", "destination": "dist" },
-
-      // Copy templates
-      "copy": [{ "source": "./src/Publisher/Builder/template", "destination": "./dist/Publisher/Builder/template/" }],
-
-      // chmod the CLI entry point to executable.
-      "chmod": [{ "path": "./dist/ESDocCLI.js", "mode": "755" }]
+      "babel": { "source": "src", "destination": "dist" }
    },
 
    "publish":
@@ -27,7 +21,7 @@
          "report": "./node_modules/.bin/codecov"
       },
 
-      "istanbul": { "command": "cover", "options": ["--include-all-sources --root src -x '**/template/**'"] },
+      "istanbul": { "command": "cover", "options": ["--include-all-sources --root src"] },
       "mocha": { "source": "./test/src", "options": ["--compilers js:babel-register", "-t 120000 --recursive"] }
    }
 }

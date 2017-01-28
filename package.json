@@ -1,0 +1,41 @@
+{
+  "name": "typhonjs-color-logger",
+  "version": "0.0.1",
+  "description": "Provides ANSI color logging.",
+  "author": "typhonrt",
+  "homepage": "https://github.com/typhonjs-node-utils/typhonjs-color-logger",
+  "license": "MPL-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/typhonjs-doc/tjsdoc"
+  },
+  "scripts": {
+    "build": "babel-node ./node_modules/typhonjs-npm-scripts-build-babel/scripts/build.js",
+    "esdoc": "esdoc -c .esdocrc",
+    "eslint": "eslint .",
+    "test": "babel-node ./node_modules/typhonjs-npm-scripts-test-mocha/scripts/mocha.js",
+    "test-coverage": "babel-node ./node_modules/typhonjs-npm-scripts-test-mocha/scripts/mocha-istanbul.js"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "typhonjs-config-eslint": "^0.4.0",
+    "typhonjs-npm-build-test": "^0.4.0",
+    "typhonjs-plugin-manager": "<1.0.0"
+  },
+  "keywords": [
+    "typhonjs",
+    "ansi",
+    "color",
+    "logger"
+  ],
+  "files": [
+    "dist",
+    "src",
+    "AUTHORS.md"
+  ],
+  "main": "dist/ColorLogger.js",
+  "bugs": {
+    "url": "https://github.com/typhonjs-doc/tjsdoc/issues"
+  }
+}

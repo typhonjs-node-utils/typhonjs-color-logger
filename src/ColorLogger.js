@@ -103,7 +103,7 @@ export class ColorLogger
        */
       this._inclusiveTraceFilters = new Map();
 
-      this.addFilter({ type: 'exclusive', name: 'typhonjs-color-logger', filterString: 'ColorLogger' });
+      this.addFilter({ type: 'exclusive', name: 'typhonjs-color-logger', filterString: 'typhonjs-color-logger' });
       this.addFilter({ type: 'exclusive', name: 'backbone-esnext-events', filterString: 'backbone-esnext-events' });
 
       this.setOptions(options);

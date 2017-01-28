@@ -22,7 +22,7 @@
   "devDependencies": {
     "typhonjs-config-eslint": "^0.4.0",
     "typhonjs-npm-build-test": "^0.4.0",
-    "typhonjs-plugin-manager": "<1.0.0"
+    "typhonjs-plugin-manager": "<=1.0.0"
   },
   "keywords": [
     "typhonjs",
@@ -37,6 +37,6 @@
   ],
   "main": "dist/ColorLogger.js",
   "bugs": {
-    "url": "https://github.com/typhonjs-doc/tjsdoc/issues"
+    "url": "https://github.com/typhonjs-node-utils/typhonjs-color-logger/issues"
   }
 }

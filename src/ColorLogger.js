@@ -433,7 +433,7 @@ export class ColorLogger
 
       const text = [];
 
-      let isTrace = level === 'trace';
+      const isTrace = level === 'trace';
 
       for (const m of msg)
       {

@@ -5,7 +5,7 @@ import logger     from '../../src/ColorLogger.js';
 // TODO: Add more tests!
 describe('ColorLogger:', () =>
 {
-   let oldConsole;
+   // let oldConsole;
 
    // beforeEach(() => { oldConsole = console.log; });
    // afterEach(() => { console.log = oldConsole; });

@@ -925,3 +925,17 @@ export function onPluginLoad(ev)
       }
    });
 }
+
+/**
+ * Removes any trace filters when unloading plugin.
+ *
+ * @param {PluginEvent} ev - The plugin event.
+ *
+ * @see https://www.npmjs.com/package/typhonjs-plugin-manager
+ *
+ * @ignore
+ */
+export function onPluginUnload(ev)
+{
+   logger.removeAllFilters();
+}

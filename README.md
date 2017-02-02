@@ -34,10 +34,10 @@ Log level and color:
 - verbose: purple
 - trace: light cyan
 
-Each log method for the log levels above have two alternate versions that are accessed by appending `NoColor` or
-`Raw` to the method name. Or if using event bindings appending `:nocolor` or `:raw`. The no color option with, well,
-no color outputting the message with the current log format and the raw format will output just the raw message with
-no format or color applied.
+Each log method for the log levels above have two alternate versions that are accessed by appending `Compact`,
+`NoColor` or `Raw` to the method name. Or if using event bindings appending `:compact`, `:nocolor` or `:raw`. The no
+color option with, well, no color outputting the message with the current log format and the raw format will output
+just the raw message with no format or color applied.
 
 In addition trace inclusive and exclusive regexp filtering is available to eliminate spurious code removing it from
 the stack trace. By default the typhonjs-color-logger and backbone-esnext-events is excluded from trace results.

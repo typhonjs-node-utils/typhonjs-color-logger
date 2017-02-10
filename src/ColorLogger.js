@@ -416,6 +416,18 @@ export class ColorLogger
    }
 
    /**
+    * Returns true if the given level is a valid log level.
+    *
+    * @param {string}   level - The log level string to test.
+    *
+    * @returns {boolean}
+    */
+   isValidLogLevel(level)
+   {
+      return typeof level === 'string' && typeof s_LOG_LEVELS[level] === 'number';
+   }
+
+   /**
     * Display log message.
     *
     * @param {string}   level - log level: `fatal`, `error`, `warn`, `info`, `debug`, `verbose`, `trace`.
@@ -924,6 +936,7 @@ export function onPluginLoad(ev)
    eventbus.on(`${eventPrepend}log:get:options`, logger.getOptions, logger);
    eventbus.on(`${eventPrepend}log:get:trace:info`, logger.getTraceInfo, logger);
    eventbus.on(`${eventPrepend}log:is:level:enabled`, logger.isLevelEnabled, logger);
+   eventbus.on(`${eventPrepend}log:is:valid:log:level`, logger.isValidLogLevel, logger);
    eventbus.on(`${eventPrepend}log:remove:all:filters`, logger.removeAllFilters, logger);
    eventbus.on(`${eventPrepend}log:remove:filter`, logger.removeFilter, logger);
    eventbus.on(`${eventPrepend}log:set:filter:enabled`, logger.setFilterEnabled, logger);

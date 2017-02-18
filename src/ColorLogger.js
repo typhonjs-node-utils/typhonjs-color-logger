@@ -341,13 +341,13 @@ export class ColorLogger
     *
     * @param {Error}    error - An optional Error to trace instead of artificially generating one.
     *
-    * @param {boolean}  [isTrace=false] - If true then process remaining trace.
+    * @param {boolean}  [isFullTrace=true] - If true then process remaining trace.
     *
     * @return {{info: string, trace: String[]}} info: file name and line number; trace: remaining stack trace if
     *                                           enabled.
     * @private
     */
-   getTraceInfo(error, isTrace = false)
+   getTraceInfo(error, isFullTrace = true)
    {
       let info = 'no stack trace';
       const trace = [];
@@ -382,7 +382,7 @@ export class ColorLogger
 
          // If gathering trace info continue to push lines to `trace`. Ignoring any lines that originate from
          // ColorLogger or `backbone-esnext-events` plus an optional filter.
-         if (isTrace)
+         if (isFullTrace)
          {
             for (; cntr < lines.length; cntr++)
             {
@@ -456,7 +456,7 @@ export class ColorLogger
          }
          else if (m instanceof Error)
          {
-            const result = this.getTraceInfo(m, true);
+            const result = this.getTraceInfo(m);
 
             text.push(`${m.message}\n${result.trace.join('\n')}`);
          }

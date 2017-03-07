@@ -431,16 +431,21 @@ export class ColorLogger
     * Display log message.
     *
     * @param {string}   level - log level: `fatal`, `error`, `warn`, `info`, `debug`, `verbose`, `trace`.
+    *
     * @param {boolean}  [compact=false] - If true then all JSON object conversion is compacted.
+    *
     * @param {boolean}  [nocolor=false] - If true then no color is applied.
+    *
     * @param {boolean}  [raw=false] - If true then just the raw message is logged at the given level.
+    *
+    * @param {boolean}  [time=false] - If true then message is logged at the given level with a timestamp.
     *
     * @param {...*}     msg - log message.
     *
     * @returns {string|undefined} formatted log message or undefined if log level is not enabled.
     * @private
     */
-   _output(level, compact = false, nocolor = false, raw = false, ...msg)
+   _output(level, compact = false, nocolor = false, raw = false, time = false,  ...msg)
    {
       if (!s_IS_LEVEL_ENABLED(this.getLogLevel(), s_LOG_LEVELS[level])) { return; }
 
@@ -473,7 +478,7 @@ export class ColorLogger
       let info = '';
       let trace = '';
 
-      if (this._options.showInfo && !raw)
+      if (this._options.showInfo && !raw && !time)
       {
          const infoSpace = nocolor ? '' : ' ';
 
@@ -485,7 +490,7 @@ export class ColorLogger
 
       let now = '';
 
-      if (this._options.showDate && !raw)
+      if (time || (this._options.showDate && !raw))
       {
          const d = new Date();
 
@@ -605,7 +610,7 @@ export class ColorLogger
     */
    setOptions(options = {})
    {
-      if (typeof options !== 'object') { throw new TypeError(`'options' is not an object.`); }
+      if (typeof options !== 'object') { throw new TypeError(`'options' is not an 'object'.`); }
 
       if (typeof options.autoPluginFilters === 'boolean')
       {
@@ -625,196 +630,245 @@ export class ColorLogger
     * @param {...*} msg - log message.
     * @returns {string} formatted log message.
     */
-   fatal(...msg) { return this._output('fatal', false, false, false, ...msg); }
+   fatal(...msg) { return this._output('fatal', false, false, false, false, ...msg); }
 
    /**
     * Display fatal (light red) log; objects compacted.
     * @param {...*} msg - log message.
     * @returns {string} formatted log message.
     */
-   fatalCompact(...msg) { return this._output('fatal', true, false, false, ...msg); }
+   fatalCompact(...msg) { return this._output('fatal', true, false, false, false, ...msg); }
 
    /**
     * Display fatal log.
     * @param {...*} msg - log message.
     * @returns {string} formatted log message.
     */
-   fatalNoColor(...msg) { return this._output('fatal', false, true, false, ...msg); }
+   fatalNoColor(...msg) { return this._output('fatal', false, true, false, false, ...msg); }
 
    /**
     * Display raw fatal log (no style / no color).
     * @param {...*} msg - log message.
     * @returns {string} formatted log message.
     */
-   fatalRaw(...msg) { return this._output('fatal', false, true, true, ...msg); }
+   fatalRaw(...msg) { return this._output('fatal', false, true, true, false, ...msg); }
+
+   /**
+    * Display fatal log (with time).
+    * @param {...*} msg - log message.
+    * @returns {string} formatted log message.
+    */
+   fatalTime(...msg) { return this._output('fatal', false, false, false, true, ...msg); }
 
    /**
     * Display error(red) log.
     * @param {...*} msg - log message.
     * @returns {string} formatted log message.
     */
-   error(...msg) { return this._output('error', false, false, false, ...msg); }
+   error(...msg) { return this._output('error', false, false, false, false, ...msg); }
 
    /**
     * Display error(red) log; objects compacted.
     * @param {...*} msg - log message.
     * @returns {string} formatted log message.
     */
-   errorCompact(...msg) { return this._output('error', true, false, false, ...msg); }
+   errorCompact(...msg) { return this._output('error', true, false, false, false, ...msg); }
 
    /**
     * Display error log.
     * @param {...*} msg - log message.
     * @returns {string} formatted log message.
     */
-   errorNoColor(...msg) { return this._output('error', false, true, false, ...msg); }
+   errorNoColor(...msg) { return this._output('error', false, true, false, false, ...msg); }
 
    /**
     * Display raw error log (no style / no color).
     * @param {...*} msg - log message.
     * @returns {string} formatted log message.
     */
-   errorRaw(...msg) { return this._output('error', false, true, true, ...msg); }
+   errorRaw(...msg) { return this._output('error', false, true, true, false, ...msg); }
+
+   /**
+    * Display error log (with time).
+    * @param {...*} msg - log message.
+    * @returns {string} formatted log message.
+    */
+   errorTime(...msg) { return this._output('error', false, false, false, true, ...msg); }
 
    /**
     * Display warning (yellow) log.
     * @param {...*} msg - log message.
     * @returns {string} formatted log message.
     */
-   warn(...msg) { return this._output('warn', false, false, false, ...msg); }
+   warn(...msg) { return this._output('warn', false, false, false, false, ...msg); }
 
    /**
     * Display warning (yellow) log; objects compacted.
     * @param {...*} msg - log message.
     * @returns {string} formatted log message.
     */
-   warnCompact(...msg) { return this._output('warn', true, false, false, ...msg); }
+   warnCompact(...msg) { return this._output('warn', true, false, false, false, ...msg); }
 
    /**
     * Display warning log.
     * @param {...*} msg - log message.
     * @returns {string} formatted log message.
     */
-   warnNoColor(...msg) { return this._output('warn', false, true, false, ...msg); }
+   warnNoColor(...msg) { return this._output('warn', false, true, false, false, ...msg); }
 
    /**
     * Display raw warn log (no style / no color).
     * @param {...*} msg - log message.
     * @returns {string} formatted log message.
     */
-   warnRaw(...msg) { return this._output('warn', false, true, true, ...msg); }
+   warnRaw(...msg) { return this._output('warn', false, true, true, false, ...msg); }
+
+   /**
+    * Display warn log (with time).
+    * @param {...*} msg - log message.
+    * @returns {string} formatted log message.
+    */
+   warnTime(...msg) { return this._output('warn', false, false, false, true, ...msg); }
 
    /**
     * Display info (green) log.
     * @param {...*} msg - log message.
     * @returns {string} formatted log message.
     */
-   info(...msg) { return this._output('info', false, false, false, ...msg); }
+   info(...msg) { return this._output('info', false, false, false, false, ...msg); }
 
    /**
     * Display info (green) log; objects compacted.
     * @param {...*} msg - log message.
     * @returns {string} formatted log message.
     */
-   infoCompact(...msg) { return this._output('info', true, false, false, ...msg); }
+   infoCompact(...msg) { return this._output('info', true, false, false, false, ...msg); }
 
    /**
     * Display info log.
     * @param {...*} msg - log message.
     * @returns {string} formatted log message.
     */
-   infoNoColor(...msg) { return this._output('info', false, true, false, ...msg); }
+   infoNoColor(...msg) { return this._output('info', false, true, false, false, ...msg); }
 
    /**
     * Display raw info log (no style / no color).
     * @param {...*} msg - log message.
     * @returns {string} formatted log message.
     */
-   infoRaw(...msg) { return this._output('info', false, true, true, ...msg); }
+   infoRaw(...msg) { return this._output('info', false, true, true, false, ...msg); }
+
+   /**
+    * Display info log (with time).
+    * @param {...*} msg - log message.
+    * @returns {string} formatted log message.
+    */
+   infoTime(...msg) { return this._output('info', false, false, false, true, ...msg); }
 
    /**
     * Display debug (blue) log.
     * @param {...*} msg - log message.
     * @returns {string} formatted log message.
     */
-   debug(...msg) { return this._output('debug', false, false, false, ...msg); }
+   debug(...msg) { return this._output('debug', false, false, false, false, ...msg); }
 
    /**
     * Display debug (blue) log; objects compacted.
     * @param {...*} msg - log message.
     * @returns {string} formatted log message.
     */
-   debugCompact(...msg) { return this._output('debug', true, false, false, ...msg); }
+   debugCompact(...msg) { return this._output('debug', true, false, false, false, ...msg); }
 
    /**
     * Display debug log.
     * @param {...*} msg - log message.
     * @returns {string} formatted log message.
     */
-   debugNoColor(...msg) { return this._output('debug', false, true, false, ...msg); }
+   debugNoColor(...msg) { return this._output('debug', false, true, false, false, ...msg); }
 
    /**
     * Display raw debug log (no style / no color).
     * @param {...*} msg - log message.
     * @returns {string} formatted log message.
     */
-   debugRaw(...msg) { return this._output('debug', false, true, true, ...msg); }
+   debugRaw(...msg) { return this._output('debug', false, true, true, false, ...msg); }
+
+   /**
+    * Display debug log (with time).
+    * @param {...*} msg - log message.
+    * @returns {string} formatted log message.
+    */
+   debugTime(...msg) { return this._output('debug', false, false, false, true, ...msg); }
 
    /**
     * Display verbose (purple) log.
     * @param {...*} msg - log message.
     * @returns {string} formatted log message.
     */
-   verbose(...msg) { return this._output('verbose', false, false, false, ...msg); }
+   verbose(...msg) { return this._output('verbose', false, false, false, false, ...msg); }
 
    /**
     * Display verbose (purple) log; objects compacted.
     * @param {...*} msg - log message.
     * @returns {string} formatted log message.
     */
-   verboseCompact(...msg) { return this._output('verbose', true, false, false, ...msg); }
+   verboseCompact(...msg) { return this._output('verbose', true, false, false, false, ...msg); }
 
    /**
     * Display verbose log.
     * @param {...*} msg - log message.
     * @returns {string} formatted log message.
     */
-   verboseNoColor(...msg) { return this._output('verbose', false, true, false, ...msg); }
+   verboseNoColor(...msg) { return this._output('verbose', false, true, false, false, ...msg); }
 
    /**
     * Display raw verbose log (no style / no color).
     * @param {...*} msg - log message.
     * @returns {string} formatted log message.
     */
-   verboseRaw(...msg) { return this._output('verbose', false, true, true, ...msg); }
+   verboseRaw(...msg) { return this._output('verbose', false, true, true, false, ...msg); }
+
+   /**
+    * Display verbose log (with time).
+    * @param {...*} msg - log message.
+    * @returns {string} formatted log message.
+    */
+   verboseTime(...msg) { return this._output('verbose', false, false, false, true, ...msg); }
 
    /**
     * Display trace (purple) log.
     * @param {...*} msg - log message.
     * @returns {string} formatted log message.
     */
-   trace(...msg) { return this._output('trace', false, false, false, ...msg); }
+   trace(...msg) { return this._output('trace', false, false, false, false, ...msg); }
 
    /**
     * Display trace (purple) log; objects compacted.
     * @param {...*} msg - log message.
     * @returns {string} formatted log message.
     */
-   traceCompact(...msg) { return this._output('trace', true, false, false, ...msg); }
+   traceCompact(...msg) { return this._output('trace', true, false, false, false, ...msg); }
 
    /**
     * Display trace log.
     * @param {...*} msg - log message.
     * @returns {string} formatted log message.
     */
-   traceNoColor(...msg) { return this._output('trace', false, true, false, ...msg); }
+   traceNoColor(...msg) { return this._output('trace', false, true, false, false, ...msg); }
 
    /**
     * Display raw trace log (no style / no color).
     * @param {...*} msg - log message.
     * @returns {string} formatted log message.
     */
-   traceRaw(...msg) { return this._output('trace', false, true, true, ...msg); }
+   traceRaw(...msg) { return this._output('trace', false, true, true, false, ...msg); }
+
+   /**
+    * Display trace log (with time).
+    * @param {...*} msg - log message.
+    * @returns {string} formatted log message.
+    */
+   traceTime(...msg) { return this._output('trace', false, false, false, true, ...msg); }
 }
 
 /**
@@ -903,30 +957,37 @@ export function onPluginLoad(ev)
    eventbus.on(`${eventPrepend}log:fatal:compact`, logger.fatalCompact, logger);
    eventbus.on(`${eventPrepend}log:fatal:nocolor`, logger.fatalNoColor, logger);
    eventbus.on(`${eventPrepend}log:fatal:raw`, logger.fatalRaw, logger);
+   eventbus.on(`${eventPrepend}log:fatal:time`, logger.fatalTime, logger);
    eventbus.on(`${eventPrepend}log:error`, logger.error, logger);
    eventbus.on(`${eventPrepend}log:error:compact`, logger.errorCompact, logger);
    eventbus.on(`${eventPrepend}log:error:nocolor`, logger.errorNoColor, logger);
    eventbus.on(`${eventPrepend}log:error:raw`, logger.errorRaw, logger);
+   eventbus.on(`${eventPrepend}log:error:time`, logger.errorTime, logger);
    eventbus.on(`${eventPrepend}log:warn`, logger.warn, logger);
    eventbus.on(`${eventPrepend}log:warn:compact`, logger.warnCompact, logger);
    eventbus.on(`${eventPrepend}log:warn:nocolor`, logger.warnNoColor, logger);
    eventbus.on(`${eventPrepend}log:warn:raw`, logger.warnRaw, logger);
+   eventbus.on(`${eventPrepend}log:warn:time`, logger.warnTime, logger);
    eventbus.on(`${eventPrepend}log:info`, logger.info, logger);
    eventbus.on(`${eventPrepend}log:info:compact`, logger.infoCompact, logger);
    eventbus.on(`${eventPrepend}log:info:nocolor`, logger.infoNoColor, logger);
    eventbus.on(`${eventPrepend}log:info:raw`, logger.infoRaw, logger);
+   eventbus.on(`${eventPrepend}log:info:time`, logger.infoTime, logger);
    eventbus.on(`${eventPrepend}log:debug`, logger.debug, logger);
    eventbus.on(`${eventPrepend}log:debug:compact`, logger.debugCompact, logger);
    eventbus.on(`${eventPrepend}log:debug:nocolor`, logger.debugNoColor, logger);
    eventbus.on(`${eventPrepend}log:debug:raw`, logger.debugRaw, logger);
+   eventbus.on(`${eventPrepend}log:debug:time`, logger.debugTime, logger);
    eventbus.on(`${eventPrepend}log:verbose`, logger.verbose, logger);
    eventbus.on(`${eventPrepend}log:verbose:compact`, logger.verboseCompact, logger);
    eventbus.on(`${eventPrepend}log:verbose:nocolor`, logger.verboseNoColor, logger);
    eventbus.on(`${eventPrepend}log:verbose:raw`, logger.verboseRaw, logger);
+   eventbus.on(`${eventPrepend}log:verbose:time`, logger.verboseTime, logger);
    eventbus.on(`${eventPrepend}log:trace`, logger.trace, logger);
    eventbus.on(`${eventPrepend}log:trace:compact`, logger.traceCompact, logger);
    eventbus.on(`${eventPrepend}log:trace:nocolor`, logger.traceNoColor, logger);
    eventbus.on(`${eventPrepend}log:trace:raw`, logger.traceRaw, logger);
+   eventbus.on(`${eventPrepend}log:trace:time`, logger.traceTime, logger);
 
    eventbus.on(`${eventPrepend}log:add:filter`, logger.addFilter, logger);
    eventbus.on(`${eventPrepend}log:get:all:filter:data`, logger.getAllFilterData, logger);

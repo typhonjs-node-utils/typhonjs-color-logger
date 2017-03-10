@@ -2,8 +2,8 @@
  * Provides ColorLoggerOptions
  * @typedef {object}    ColorLoggerOptions
  * @property {boolean}  [autoPluginFilters=false] - If true inclusive trace filters are added / removed automatically in
- *                                                 response to 'typhonjs:plugin:manager:added:plugin' and
- *                                                 'typhonjs:plugin:manager:removed:plugin'.
+ *                                                 response to 'typhonjs:plugin:manager:plugin:added' and
+ *                                                 'typhonjs:plugin:manager:plugin:removed'.
  * @property {boolean}  [consoleEnabled=true] - If true output to `console.log` is enabled.
  * @property {boolean}  [filtersEnabled=true] - If true trace filters are applied in `_getInfo`.
  * @property {boolean}  [showDate=false] - If true the date is added to format results

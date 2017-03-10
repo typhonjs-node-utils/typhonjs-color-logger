@@ -33,8 +33,8 @@ import TraceFilter from './TraceFilter.js';
  * In addition trace inclusive and exclusive regexp filtering is available to eliminate spurious code removing it from
  * the stack trace. By default the typhonjs-color-logger and backbone-esnext-events is excluded from trace results.
  * Additionally the following events from typhonjs-plugin-manager are handled to automatically add and remove trace
- * filters from plugins added & removed via the event bindings: `typhonjs:plugin:manager:added:plugin`,
- * `typhonjs:plugin:manager:plugin:changed:eventbus`, and `typhonjs:plugin:manager:removed:plugin`. To skip auto
+ * filters from plugins added & removed via the event bindings: `typhonjs:plugin:manager:plugin:added`,
+ * `typhonjs:plugin:manager:eventbus:changed`, and `typhonjs:plugin:manager:plugin:removed`. To skip auto
  * filter registration for a particular plugin set `logAutoFilter` to false in the associated plugins options.
 
  * @example
@@ -345,7 +345,6 @@ export class ColorLogger
     *
     * @return {{info: string, trace: String[]}} info: file name and line number; trace: remaining stack trace if
     *                                           enabled.
-    * @private
     */
    getTraceInfo(error, isFullTrace = true)
    {
@@ -989,23 +988,23 @@ export function onPluginLoad(ev)
    eventbus.on(`${eventPrepend}log:trace:raw`, logger.traceRaw, logger);
    eventbus.on(`${eventPrepend}log:trace:time`, logger.traceTime, logger);
 
-   eventbus.on(`${eventPrepend}log:add:filter`, logger.addFilter, logger);
-   eventbus.on(`${eventPrepend}log:get:all:filter:data`, logger.getAllFilterData, logger);
-   eventbus.on(`${eventPrepend}log:get:filter:data`, logger.getFilterData, logger);
-   eventbus.on(`${eventPrepend}log:get:filter:enabled`, logger.getFilterEnabled, logger);
-   eventbus.on(`${eventPrepend}log:get:level`, logger.getLogLevel, logger);
-   eventbus.on(`${eventPrepend}log:get:options`, logger.getOptions, logger);
-   eventbus.on(`${eventPrepend}log:get:trace:info`, logger.getTraceInfo, logger);
-   eventbus.on(`${eventPrepend}log:is:level:enabled`, logger.isLevelEnabled, logger);
-   eventbus.on(`${eventPrepend}log:is:valid:log:level`, logger.isValidLogLevel, logger);
-   eventbus.on(`${eventPrepend}log:remove:all:filters`, logger.removeAllFilters, logger);
-   eventbus.on(`${eventPrepend}log:remove:filter`, logger.removeFilter, logger);
-   eventbus.on(`${eventPrepend}log:set:filter:enabled`, logger.setFilterEnabled, logger);
-   eventbus.on(`${eventPrepend}log:set:level`, logger.setLogLevel, logger);
-   eventbus.on(`${eventPrepend}log:set:options`, logger.setOptions, logger);
+   eventbus.on(`${eventPrepend}log:filter:add`, logger.addFilter, logger);
+   eventbus.on(`${eventPrepend}log:filter:data:get:all`, logger.getAllFilterData, logger);
+   eventbus.on(`${eventPrepend}log:filter:data:get`, logger.getFilterData, logger);
+   eventbus.on(`${eventPrepend}log:filter:get:enabled`, logger.getFilterEnabled, logger);
+   eventbus.on(`${eventPrepend}log:filter:remove`, logger.removeFilter, logger);
+   eventbus.on(`${eventPrepend}log:filter:remove:all`, logger.removeAllFilters, logger);
+   eventbus.on(`${eventPrepend}log:filter:set:enabled`, logger.setFilterEnabled, logger);
+   eventbus.on(`${eventPrepend}log:level:get`, logger.getLogLevel, logger);
+   eventbus.on(`${eventPrepend}log:level:is:enabled`, logger.isLevelEnabled, logger);
+   eventbus.on(`${eventPrepend}log:level:is:valid`, logger.isValidLogLevel, logger);
+   eventbus.on(`${eventPrepend}log:level:set`, logger.setLogLevel, logger);
+   eventbus.on(`${eventPrepend}log:options:get`, logger.getOptions, logger);
+   eventbus.on(`${eventPrepend}log:options:set`, logger.setOptions, logger);
+   eventbus.on(`${eventPrepend}log:trace:info:get`, logger.getTraceInfo, logger);
 
    // Add plugin auto filter support for added plugins.
-   eventbus.on('typhonjs:plugin:manager:added:plugin', (plugin) =>
+   eventbus.on('typhonjs:plugin:manager:plugin:added', (plugin) =>
    {
       // Always ignore adding an inclusive filter when typhonjs-color-logger is added.
       if (typeof plugin.name === 'string' && plugin.name === 'typhonjs-color-logger') { return; }
@@ -1024,7 +1023,7 @@ export function onPluginLoad(ev)
    });
 
    // Add plugin auto filter re-registration support when plugin managers change eventbus / event binding prepend.
-   eventbus.on('typhonjs:plugin:manager:plugin:changed:eventbus', (plugin) =>
+   eventbus.on('typhonjs:plugin:manager:eventbus:changed', (plugin) =>
    {
       if (logger.getOptions().autoPluginFilters && typeof plugin.scopedName === 'string' &&
        typeof plugin.targetEscaped === 'string' && typeof plugin.options === 'object')
@@ -1041,7 +1040,7 @@ export function onPluginLoad(ev)
    });
 
    // Add plugin auto filter support for removed plugins.
-   eventbus.on('typhonjs:plugin:manager:removed:plugin', (plugin) =>
+   eventbus.on('typhonjs:plugin:manager:plugin:removed', (plugin) =>
    {
       if (logger.getOptions().autoPluginFilters && typeof plugin.scopedName === 'string' &&
        typeof plugin.options === 'object')

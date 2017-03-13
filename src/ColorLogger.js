@@ -991,10 +991,10 @@ export function onPluginLoad(ev)
    eventbus.on(`${eventPrepend}log:filter:add`, logger.addFilter, logger);
    eventbus.on(`${eventPrepend}log:filter:data:get:all`, logger.getAllFilterData, logger);
    eventbus.on(`${eventPrepend}log:filter:data:get`, logger.getFilterData, logger);
-   eventbus.on(`${eventPrepend}log:filter:get:enabled`, logger.getFilterEnabled, logger);
+   eventbus.on(`${eventPrepend}log:filter:enabled:get`, logger.getFilterEnabled, logger);
+   eventbus.on(`${eventPrepend}log:filter:enabled:set`, logger.setFilterEnabled, logger);
    eventbus.on(`${eventPrepend}log:filter:remove`, logger.removeFilter, logger);
    eventbus.on(`${eventPrepend}log:filter:remove:all`, logger.removeAllFilters, logger);
-   eventbus.on(`${eventPrepend}log:filter:set:enabled`, logger.setFilterEnabled, logger);
    eventbus.on(`${eventPrepend}log:level:get`, logger.getLogLevel, logger);
    eventbus.on(`${eventPrepend}log:level:is:enabled`, logger.isLevelEnabled, logger);
    eventbus.on(`${eventPrepend}log:level:is:valid`, logger.isValidLogLevel, logger);

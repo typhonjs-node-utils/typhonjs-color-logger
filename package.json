@@ -1,6 +1,6 @@
 {
   "name": "typhonjs-color-logger",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "description": "Provides ANSI color logging.",
   "author": "typhonrt",
   "homepage": "https://github.com/typhonjs-node-utils/typhonjs-color-logger",

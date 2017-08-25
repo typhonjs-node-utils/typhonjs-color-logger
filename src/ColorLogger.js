@@ -1004,54 +1004,60 @@ export function onPluginLoad(ev)
    eventbus.on(`${eventPrepend}log:trace:info:get`, logger.getTraceInfo, logger);
 
    // Add plugin auto filter support for added plugins.
-   eventbus.on('typhonjs:plugin:manager:plugin:added', (plugin) =>
+   eventbus.on('typhonjs:plugin:manager:plugin:added', (data) =>
    {
-      // Always ignore adding an inclusive filter when typhonjs-color-logger is added.
-      if (typeof plugin.name === 'string' && plugin.name === 'typhonjs-color-logger') { return; }
+      if (typeof data !== 'object' && typeof data.plugin !== 'object') { return; }
 
-      if (logger.getOptions().autoPluginFilters && typeof plugin.scopedName === 'string' &&
-       typeof plugin.targetEscaped === 'string' && typeof plugin.options === 'object')
+      // Always ignore adding an inclusive filter when typhonjs-color-logger is added.
+      if (typeof data.plugin.name === 'string' && data.plugin.name === 'typhonjs-color-logger') { return; }
+
+      if (logger.getOptions().autoPluginFilters && typeof data.plugin.scopedName === 'string' &&
+       typeof data.plugin.targetEscaped === 'string' && typeof data.plugin.options === 'object')
       {
          // Skip auto filtering if the given plugin has logAutoFilter defined and it is false.
-         if (typeof plugin.options.logAutoFilter === 'boolean' && !plugin.options.logAutoFilter) { return; }
+         if (typeof data.plugin.options.logAutoFilter === 'boolean' && !data.plugin.options.logAutoFilter) { return; }
 
          // Allow plugin options to override default 'inclusive' filter potentially making it 'exclusive'.
-         const type = plugin.options.logAutoFilterType !== 'exclusive' ? 'inclusive' : 'exclusive';
+         const type = data.plugin.options.logAutoFilterType !== 'exclusive' ? 'inclusive' : 'exclusive';
 
-         logger.addFilter({ type, name: plugin.scopedName, filterString: plugin.targetEscaped });
+         logger.addFilter({ type, name: data.plugin.scopedName, filterString: data.plugin.targetEscaped });
       }
    });
 
    // Add plugin auto filter re-registration support when plugin managers change eventbus / event binding prepend.
-   eventbus.on('typhonjs:plugin:manager:eventbus:changed', (plugin) =>
+   eventbus.on('typhonjs:plugin:manager:eventbus:changed', (data) =>
    {
-      if (logger.getOptions().autoPluginFilters && typeof plugin.scopedName === 'string' &&
-       typeof plugin.targetEscaped === 'string' && typeof plugin.options === 'object')
+      if (typeof data !== 'object' && typeof data.plugin !== 'object') { return; }
+
+      if (logger.getOptions().autoPluginFilters && typeof data.plugin.scopedName === 'string' &&
+       typeof data.plugin.targetEscaped === 'string' && typeof data.plugin.options === 'object')
       {
          // Skip auto filtering if the given plugin has logAutoFilter defined and it is false.
-         if (typeof plugin.options.logAutoFilter === 'boolean' && !plugin.options.logAutoFilter) { return; }
+         if (typeof data.plugin.options.logAutoFilter === 'boolean' && !data.plugin.options.logAutoFilter) { return; }
 
          // Allow plugin options to override default 'inclusive' filter potentially making it 'exclusive'.
-         const type = plugin.options.logAutoFilterType !== 'exclusive' ? 'inclusive' : 'exclusive';
+         const type = data.plugin.options.logAutoFilterType !== 'exclusive' ? 'inclusive' : 'exclusive';
 
-         logger.removeFilter(type, plugin.oldScopedName);
-         logger.addFilter({ type, name: plugin.newScopedName, filterString: plugin.targetEscaped });
+         logger.removeFilter(type, data.oldScopedName);
+         logger.addFilter({ type, name: data.newScopedName, filterString: data.plugin.targetEscaped });
       }
    });
 
    // Add plugin auto filter support for removed plugins.
-   eventbus.on('typhonjs:plugin:manager:plugin:removed', (plugin) =>
+   eventbus.on('typhonjs:plugin:manager:plugin:removed', (data) =>
    {
-      if (logger.getOptions().autoPluginFilters && typeof plugin.scopedName === 'string' &&
-       typeof plugin.options === 'object')
+      if (typeof data !== 'object' && typeof data.plugin !== 'object') { return; }
+
+      if (logger.getOptions().autoPluginFilters && typeof data.plugin.scopedName === 'string' &&
+       typeof data.plugin.options === 'object')
       {
          // Skip auto filtering if the given plugin has logAutoFilter defined and it is false.
-         if (typeof plugin.options.logAutoFilter === 'boolean' && !plugin.options.logAutoFilter) { return; }
+         if (typeof data.plugin.options.logAutoFilter === 'boolean' && !data.plugin.options.logAutoFilter) { return; }
 
          // Allow plugin options to override default 'inclusive' filter potentially making it 'exclusive'.
-         const type = plugin.options.logAutoFilterType !== 'exclusive' ? 'inclusive' : 'exclusive';
+         const type = data.plugin.options.logAutoFilterType !== 'exclusive' ? 'inclusive' : 'exclusive';
 
-         logger.removeFilter(type, plugin.scopedName);
+         logger.removeFilter(type, data.plugin.scopedName);
       }
    });
 }
